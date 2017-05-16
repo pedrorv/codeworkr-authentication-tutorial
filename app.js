@@ -28,6 +28,12 @@ app.use(session({
 
 app.use(flash());
 
+app.use((req, res, next) => {
+  res.locals.success_messages = req.flash('success')
+  res.locals.error_messages = req.flash('error')
+  next()
+})
+
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 

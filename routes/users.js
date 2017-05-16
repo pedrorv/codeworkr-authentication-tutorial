@@ -16,6 +16,11 @@ router.route('/register')
   .post((req, res, next) => {
     const result = Joi.validate(req.body, userSchema)
 
+    if (result.error) {
+      req.flash('error', 'Data is not valid. Please try again.')
+      req.redirect('/users/register')
+      return
+    }
   })
 
 router.route('/login')
