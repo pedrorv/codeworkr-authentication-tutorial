@@ -17,6 +17,7 @@
     "express-handlebars": "^3.0.0",
     "express-messages": "^1.0.1",
     "express-session": "^1.15.2",
+    "joi": "^10.4.2",
     "morgan": "^1.8.1"
   }
 }
