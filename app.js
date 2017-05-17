@@ -6,6 +6,9 @@ const bodyParser = require('body-parser');
 const expressHandlebars = require('express-handlebars');
 const flash = require('connect-flash');
 const session = require('express-session');
+const mongoose = require('mongoose')
+
+mongoose.connect('mongodb://localhost/codeworkrauthentication')
 
 const app = express();
 app.use(morgan('dev'));
