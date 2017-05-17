@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi')
 
+const User = require('../models/user')
+
 const userSchema = Joi.object().keys({
   email: Joi.string().email().required(),
   username: Joi.string().required(),
@@ -21,6 +23,16 @@ router.route('/register')
       req.redirect('/users/register')
       return
     }
+
+    User.findOne({ 'email': result.value.email })
+      .then(user => {
+        if (user) {
+          req.flash('error', 'Email is already in use.')
+          res.redirect('/users/register')
+          return
+        }
+      })
+      .catch(next)
   })
 
 router.route('/login')
