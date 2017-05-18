@@ -3,6 +3,7 @@ const router = express.Router();
 const Joi = require('joi')
 
 const User = require('../models/user')
+const { hashPassword } = require('../utils/password')
 
 const userSchema = Joi.object().keys({
   email: Joi.string().email().required(),
@@ -31,6 +32,18 @@ router.route('/register')
           res.redirect('/users/register')
           return
         }
+
+        return hashPassword(result.value.password)
+      })
+      .then(hashedPassword => {
+        delete result.value.confirmationPassword;
+        result.value.password = hashedPassword
+        
+        return User.create(result.value)
+      })
+      .then(newUser => {
+        req.flash('success', `Welcome, ${newUser.username}!`)
+        res.redirect('/users/login')
       })
       .catch(next)
   })
