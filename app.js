@@ -9,6 +9,7 @@ const session = require('express-session');
 const mongoose = require('mongoose')
 
 mongoose.connect('mongodb://localhost/codeworkrauthentication')
+mongoose.Promise = global.Promise
 
 const app = express();
 app.use(morgan('dev'));
