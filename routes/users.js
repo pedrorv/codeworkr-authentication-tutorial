@@ -13,6 +13,13 @@ const userSchema = Joi.object().keys({
   confirmationPassword: Joi.any().valid(Joi.ref('password')).required()
 })
 
+const isAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) return next()
+
+  req.flash('error', 'Sorry, but you must be logged in first.')
+  res.redirect('/users/login')
+}
+
 router.route('/register')
   .get((req, res) => {
     res.render('register');
@@ -60,8 +67,10 @@ router.route('/login')
   }))
 
 router.route('/dashboard')
-  .get((req, res) => {
-    res.render('dashboard')
+  .get(isAuthenticated, (req, res) => {
+    res.render('dashboard', {
+      username: req.user.username
+    })
   })
 
 router.route('/logout')
