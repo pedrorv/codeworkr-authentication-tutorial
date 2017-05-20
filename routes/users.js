@@ -20,8 +20,18 @@ const isAuthenticated = (req, res, next) => {
   res.redirect('/users/login')
 }
 
+const isNotAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    req.flash('error', 'Sorry, but you are already logged in.')
+    res.redirect('/')
+    return;
+  }
+
+  return next()
+}
+
 router.route('/register')
-  .get((req, res) => {
+  .get(isNotAuthenticated, (req, res) => {
     res.render('register');
   })
   .post((req, res, next) => {
@@ -57,7 +67,7 @@ router.route('/register')
   })
 
 router.route('/login')
-  .get((req, res) => {
+  .get(isNotAuthenticated, (req, res) => {
     res.render('login');
   })
   .post(passport.authenticate('local', {
@@ -74,7 +84,7 @@ router.route('/dashboard')
   })
 
 router.route('/logout')
-  .get((req, res) => {
+  .get(isAuthenticated, (req, res) => {
     req.logout()
     req.flash('success', 'Successfully logged out.')
     res.redirect('/')
