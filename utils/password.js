@@ -7,5 +7,9 @@ module.exports = {
       .catch(error => {
         throw new Error('Hashing failed.', error)
       })
+  },
+
+  comparePasswords: (inputPassword, hashedPassword) => {
+    return bcrypt.compare(inputPassword, hashedPassword)
   }
 }
