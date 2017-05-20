@@ -41,6 +41,7 @@ app.use(flash());
 app.use((req, res, next) => {
   res.locals.success_messages = req.flash('success')
   res.locals.error_messages = req.flash('error')
+  res.locals.isAuthenticated = req.user ? true : false
   next()
 })
 
