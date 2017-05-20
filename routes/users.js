@@ -64,4 +64,11 @@ router.route('/dashboard')
     res.render('dashboard')
   })
 
+router.route('/logout')
+  .get((req, res) => {
+    req.logout()
+    req.flash('success', 'Successfully logged out.')
+    res.redirect('/')
+  })
+
 module.exports = router;
